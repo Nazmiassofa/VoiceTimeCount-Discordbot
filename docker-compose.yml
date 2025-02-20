@@ -1,0 +1,19 @@
+services:
+  discord-bot:
+    build: .
+    container_name: prabowo
+    volumes:
+      - .:/app  # Mount direktori saat ini ke dalam container
+    restart: unless-stopped
+    environment:
+      - DATABASE_URL=postgresql://yumna:yumna@localhost:5432/yumna  # Koneksi ke PostgreSQL lokal
+      - TZ=Asia/Jakarta  # Menetapkan timezone Jakarta
+    networks:
+      - bot-network
+    # Menambahkan pengaturan timezone pada container
+    command: ["sh", "-c", "cp /usr/share/zoneinfo/Asia/Jakarta /etc/localtime && exec python3 bot.py"]  # Pastikan bot.py di path yang benar
+
+networks:
+  bot-network:
+    external: true
+
