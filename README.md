@@ -4,11 +4,15 @@
 **Nazmiassofa**
 
 ## 📄 Description
-**VoiceTimeCount** bot Discord yang berfungsi untuk menghitung dan mencatat durasi waktu pengguna berada di voice channel.
+**VoiceTimeCount** Discord Bot for count your voice time.
 
 ---
 
 ## 🚀 Installation
+
+### 🔹 Database Requierement
+   - Postgresql 
+   - Table needed : voicecounter, dailyvoicecounter
 
 ### 🔹 Option 1: Docker Installation
 

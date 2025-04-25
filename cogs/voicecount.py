@@ -84,7 +84,6 @@ class Voicecount(commands.Cog):
             self.voice_start_times[member.id] = current_time  # Reset time for new channel
 
     def update_voice_time_in_db(self, member_id, duration):
-        """Update the voice time in the leveling table"""
         try:
             conn, cursor = get_db_connection()
             cursor.execute(
