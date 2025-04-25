@@ -4,7 +4,8 @@
 **Nazmiassofa**
 
 ## 📄 Description
-**VoiceTimeCount** Discord Bot for count your voice time.
+**VoiceTimeCount** 
+Discord Bot for count your voice time.
 
 ---
 
@@ -16,7 +17,7 @@
 
 ### 🔹 Option 1: Docker Installation
 
-1. Clone repository:
+1. Clone the repository
 
 2. Masuk ke direktori:
    ```bash
@@ -25,3 +26,8 @@
 3. Build Your Image:
    ```bash
 	- docker build -t <yourimagename> .
+   - setup your compose file
+
+4.Run your container
+   ```bash
+   - docker compose up -d
