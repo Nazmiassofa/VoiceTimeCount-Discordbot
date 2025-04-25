@@ -1,14 +1,21 @@
-# VoiceTimeCount DISCORD BOT
-========================================================
+# VoiceTimeCount Discord Bot
 
-Author : Nazmiassofa
-Description : VoiceTimeCounterBot
+## 🧑‍💻 Author
+**Nazmiassofa**
 
-========================================================
-** INSTALLATION STEP **
+## 📄 Description
+**VoiceTimeCount** bot Discord yang berfungsi untuk menghitung dan mencatat durasi waktu pengguna berada di voice channel.
 
-1. Docker Installation
-   - Go to directory
-   - docker built -t <yourcontainername> .
-   - docker compose up -d
+---
 
+## 🚀 Installation
+
+### 🔹 Option 1: Docker Installation
+
+1. Clone repository:
+   ```bash
+	- git clone https://github.com/username/VoiceTimeCount.git
+
+2. Masuk ke direktori:
+   ```bash
+	- cd /folder/path
