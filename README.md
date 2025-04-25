@@ -26,7 +26,7 @@ Discord Bot for count your voice time.
 3. Build Your Image:
    ```bash
 	- docker build -t <yourimagename> .
-   - setup your compose file
+    - setup your compose file
 
 4. Run your container
    ```bash
