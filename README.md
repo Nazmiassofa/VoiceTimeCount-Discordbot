@@ -17,6 +17,7 @@ Discord Bot for count your voice time.
 
 
 ### 🔹 Option 1: Docker Installation
+###
 
 1. Clone the repository
 
@@ -33,8 +34,8 @@ Discord Bot for count your voice time.
    ```bash
    - docker compose up -d
 
-
 ### 🔹 Option 2: Local Installation
+###
 
 1. Clone the repository
 
