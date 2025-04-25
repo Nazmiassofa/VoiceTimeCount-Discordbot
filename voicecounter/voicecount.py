@@ -1,19 +1,20 @@
 import discord
-import logging
-from discord.ext import commands, tasks
 import time
-from cogs.db import get_db_connection  
-from datetime import datetime
 import pytz
 
-jakarta_tz = pytz.timezone('Asia/Jakarta')
+from utils.logger import setup_logging
+from utils.db import get_db_connection  
+from datetime import datetime
+from discord.ext import commands, tasks
 
-logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+jakarta_tz = pytz.timezone('Asia/Jakarta') # Change with your local timezone
+
+setup_logging()
 
 class Voicecount(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-        self.voice_start_times = {}  # Menyimpan waktu masuk voice
+        self.voice_start_times = {} 
         self.update_points.start()
         self.track_voice_time.start()
 
@@ -22,7 +23,7 @@ class Voicecount(commands.Cog):
         if message.author.bot:
             return
 
-        logging.info(f"Chat dari {message.author.name} : {message.content}")
+        logging.info(f"Chat from {message.author.name} : {message.content}")
 
         try:
             conn, cursor = get_db_connection()
@@ -30,20 +31,20 @@ class Voicecount(commands.Cog):
                 logging.error("Database connection failed.")
                 return
 
-            cursor.execute("SELECT message_count FROM voisa.leveling WHERE member_id = %s", (message.author.id,))
+            cursor.execute("SELECT message_count FROM 'MAIN_TABLE' WHERE member_id = %s", (message.author.id,))
             result = cursor.fetchone()
 
             if result is None:
-                logging.info(f"User baru ditambahkan: {message.author.name}")
+                logging.info(f"Adding new user: {message.author.name}")
                 cursor.execute(
-                    "INSERT INTO voisa.leveling (member_id, username, message_count, voice_time, poin) VALUES (%s, %s, %s, %s, %s)",
+                    "INSERT INTO 'MAIN_TABLE' (member_id, username, message_count, voice_time, poin) VALUES (%s, %s, %s, %s, %s)",
                     (message.author.id, message.author.name, 1, 0, 0)
                 )
             else:
                 new_message_count = result[0] + 1
-                logging.info(f"Tambah total pesan {message.author.name} menjadi {new_message_count}")
+                logging.info(f"Add message count from {message.author.name} into {new_message_count}")
                 cursor.execute(
-                    "UPDATE voisa.leveling SET message_count = %s, username = %s WHERE member_id = %s",
+                    "UPDATE 'MAIN_TABLE' SET message_count = %s, username = %s WHERE member_id = %s",
                     (new_message_count, message.author.name, message.author.id)
                 )
 
@@ -87,7 +88,7 @@ class Voicecount(commands.Cog):
         try:
             conn, cursor = get_db_connection()
             cursor.execute(
-                "UPDATE voisa.leveling SET voice_time = voice_time + %s WHERE member_id = %s",
+                "UPDATE 'MAIN_TABLE' voice_time = voice_time + %s WHERE member_id = %s",
                 (duration, member_id)
             )
             conn.commit()
@@ -108,7 +109,7 @@ class Voicecount(commands.Cog):
             # Insert or update daily stats for the member
             cursor.execute(
                 """
-                INSERT INTO voisa.daily_stats (member_id, date, voice_time, username)
+                INSERT INTO 'DAILY_TABLE' (member_id, date, voice_time, username)
                 VALUES (%s, %s, %s, %s)
                 ON CONFLICT (member_id, date)
                 DO UPDATE SET voice_time = voisa.daily_stats.voice_time + %s
@@ -136,15 +137,12 @@ class Voicecount(commands.Cog):
             try:
                 conn, cursor = get_db_connection()
                 cursor.execute(
-                    "UPDATE voisa.leveling SET voice_time = voice_time + %s WHERE member_id = %s",
+                    "UPDATE 'MAIN_TABLE' SET voice_time = voice_time + %s WHERE member_id = %s",
                     (voice_duration, member_id)
                 )
                 conn.commit()
 
-                # Insert or update daily stats for the member
                 self.update_daily_stats(member_id, self.bot.get_user(member_id).name, voice_duration)
-
-                # Reset the start time to the current time
                 self.voice_start_times[member_id] = current_time
 
             except Exception as e:
@@ -163,7 +161,7 @@ class Voicecount(commands.Cog):
                 logging.error("Database connection failed in update_points.")
                 return
 
-            cursor.execute("SELECT member_id, message_count, voice_time, poin FROM voisa.leveling")
+            cursor.execute("SELECT member_id, message_count, voice_time, poin FROM 'MAIN_TABLE'")
             results = cursor.fetchall()
 
             for member_id, message_count, voice_time, current_poin in results:
@@ -173,7 +171,7 @@ class Voicecount(commands.Cog):
                     local_time = datetime.now(jakarta_tz)
                     cursor.execute(
                         """
-                        UPDATE voisa.leveling
+                        UPDATE 'MAIN_TABLE'
                         SET poin = %s, last_activity = %s
                         WHERE member_id = %s
                         """,
@@ -195,4 +193,4 @@ class Voicecount(commands.Cog):
 
 async def setup(bot):
     await bot.add_cog(Voicecount(bot))
-    logging.info("Cog Voicecount telah di-load ke bot.")
+    logging.info("Cog Voicecount has loaded.")

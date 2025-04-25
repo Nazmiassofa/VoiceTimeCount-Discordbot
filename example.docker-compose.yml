@@ -1,0 +1,17 @@
+services:
+  discord-bot:
+    build: . # you actually can use your own image
+    container_name: your_container_name
+    volumes:
+      - .:/app  # Adjust your volume for the container
+    restart: unless-stopped
+    environment:
+      - TZ=Asia/Jakarta  # Setup your timezone for the container
+      - # Your network container
+    # add timezone settings in container
+    command: ["sh", "-c", "cp /usr/share/zoneinfo/Asia/Jakarta /etc/localtime && exec python3 bot.py"]  # Pastikan bot.py di path yang benar
+
+networks:
+  your_network_container:
+    external: true
+

@@ -13,8 +13,7 @@ def get_db_connection():
             user=config.DB_USER,
             password=config.DB_PASSWORD,
             host=config.DB_HOST,
-            port=config.DB_PORT,
-            options="-c search_path=voisa"  # Atur schema default menjadi voisa
+            port=config.DB_PORT
         )
         cursor = conn.cursor()  # Menambahkan cursor
         return conn, cursor  # Mengembalikan koneksi dan cursor

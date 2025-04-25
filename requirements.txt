@@ -2,3 +2,4 @@ discord.py
 requests
 psycopg2-binary
 asyncpg
+pytz
