@@ -19,3 +19,7 @@
 2. Masuk ke direktori:
    ```bash
 	- cd /folder/path
+
+3. Build Your Image:
+   ```bash
+	- docker build -t <yourimagename> .
