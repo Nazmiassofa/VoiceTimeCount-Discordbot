@@ -15,6 +15,7 @@ Discord Bot for count your voice time.
    - Postgresql 
    - search 'MAIN_TABLE' and 'DAILY_TABLE' in /voicecounter and replace it with your own table
 
+
 ### 🔹 Option 1: Docker Installation
 
 1. Clone the repository
@@ -31,6 +32,7 @@ Discord Bot for count your voice time.
 4. Run your container
    ```bash
    - docker compose up -d
+
 
 ### 🔹 Option 2: Local Installation
 
