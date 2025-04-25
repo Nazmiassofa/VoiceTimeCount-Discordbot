@@ -1,10 +1,10 @@
 # VoiceTimeCount DISCORD BOT
-=========================================
+========================================================
 
 Author : Nazmiassofa
 Description : VoiceTimeCounterBot
 
-=========================================
+========================================================
 ** INSTALLATION STEP **
 
 1. Docker Installation
