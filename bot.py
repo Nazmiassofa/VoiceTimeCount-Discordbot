@@ -1,12 +1,12 @@
 import discord
 from discord.ext import commands
-import config  # File config.py harus menyimpan TOKEN dan PREFIX
-from logger import setup_logging  # Impor fungsi logging dari logger.py
+import config 
+from logger import setup_logging  
 import logging
 import asyncio
 import os
-import sys  # Dibutuhkan untuk os.execv
-import importlib  # Untuk reload modul
+import sys 
+import importlib 
 
 # Setup logging
 setup_logging()
