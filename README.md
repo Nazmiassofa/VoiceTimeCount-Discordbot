@@ -14,7 +14,7 @@
 
 1. Clone repository:
    ```bash
-	- git clone https://github.com/username/VoiceTimeCount.git
+	- git clone https://github.com/Nazmiassofa/VoiceTimeCount.git
 
 2. Masuk ke direktori:
    ```bash
