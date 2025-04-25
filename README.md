@@ -1,4 +1,4 @@
-# VoiceTimeCount Discord Bot
+# Discord Bot/VoiceTimeCounter
 
 ## 🧑‍💻 Author
 **Nazmiassofa**
