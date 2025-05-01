@@ -1,12 +1,14 @@
 import discord
-from discord.ext import commands
 import config 
-from utils.logger import setup_logging  
 import logging
 import asyncio
 import os
 import sys 
 import importlib 
+
+from utils.logger import setup_logging  
+from discord.ext import commands
+from utils.db import init_db_pool
 
 setup_logging()
 
@@ -16,6 +18,21 @@ bot = commands.Bot(command_prefix=config.PREFIX, intents=intents, help_command=N
 @bot.event
 async def on_ready():
     logging.info(f'Bot {bot.user} is online!')
+    
+@bot.event
+async def on_disconnect():
+    await close_db_pool()
+    logging.warning("Bot disconnected...")
+
+@bot.event
+async def on_resumed():
+    await init_db_pool()
+    logging.warning("Bot resumed...")
+
+@bot.event
+async def on_shutdown():
+    await close_db_pool()
+    logging.warning("Shutting down gracefully...")
 
 @bot.event
 async def on_command_error(ctx, error):
@@ -31,7 +48,7 @@ async def on_command_error(ctx, error):
 
 async def load_cogs():
     for filename in os.listdir('./voicecounter'):
-        if filename.endswith('.py') and filename not in ['__init__.py', 'db.py']:
+        if filename.endswith('.py'):
             try:
                 await bot.load_extension(f'cogs.{filename[:-3]}')
                 logging.info(f"Cog {filename[:-3]} berhasil dimuat.")
@@ -42,6 +59,7 @@ if __name__ == "__main__":
     async def main():
         try:
             await load_cogs()
+            await init_db_pool()
             await bot.start(config.TOKEN)
         except Exception as e:
             logging.error(f"Error saat menjalankan bot: {e}")
