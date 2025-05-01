@@ -1,6 +1,6 @@
 # Discord Bot/VoiceTimeCounter
 
-## 🧑‍💻 Author
+Author :
 **Nazmiassofa**
 
 ## 📄 Description
@@ -13,7 +13,7 @@ Discord Bot for count your voice time.
 
 ### 🔹 Database Requirements
    - Postgresql 
-   - search 'MAIN_TABLE' and 'DAILY_TABLE' in /voicecounter and replace it with your own table
+   - Adjust your database table
 
 
 ### 🔹 Option 1: Docker Installation
