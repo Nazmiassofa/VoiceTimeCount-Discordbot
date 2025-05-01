@@ -11,9 +11,10 @@ Discord Bot for count your voice time.
 
 ## 🚀 Installation
 
-### 🔹 Database Requirements
+### 🔹 Requirements
    - Postgresql 
-   - Adjust your database table
+   - Docker
+   - Python
 
 
 ### 🔹 Option 1: Docker Installation
@@ -21,7 +22,7 @@ Discord Bot for count your voice time.
 
 1. Clone the repository
 
-2. Masuk ke direktori:
+2. Enter:
    ```bash
 	- cd /folder/path
 
