@@ -30,7 +30,6 @@ class Voicecount(commands.Cog):
         user_id = int(message.author.id)
         username = message.author.name
 
-        # Tambahkan ke buffer
         if user_id in self.message_buffer:
             _, count = self.message_buffer[user_id]
             self.message_buffer[user_id] = (username, count + 1)
@@ -80,7 +79,7 @@ class Voicecount(commands.Cog):
                 SET voice_time = voice_time + $1
                 WHERE member_id = $2
             """
-            await conn.execute(query, duration, int(member_id))  # gunakan str(member_id) jika kolom TEXT
+            await conn.execute(query, duration, int(member_id)) 
         except Exception as e:
             logging.error(f"❌ Error updating voice time in leveling table for {member_id}: {e}")
         finally:
@@ -94,7 +93,7 @@ class Voicecount(commands.Cog):
             return
 
         try:
-            today = datetime.now(jakarta_tz).date()  # datetime.date object, bisa langsung dipakai oleh asyncpg
+            today = datetime.now(jakarta_tz).date()
 
             query = """
                 INSERT INTO voisa.daily_stats (member_id, date, voice_time, username)
@@ -114,11 +113,11 @@ class Voicecount(commands.Cog):
         current_time = time.time()
 
         for member_id, start_time in list(self.voice_start_times.items()):
-            voice_duration = round(current_time - start_time)  # Calculate time spent so far
+            voice_duration = round(current_time - start_time)  
 
             user = self.bot.get_user(member_id)
             if not user:
-                continue  # skip if user not found
+                continue 
 
             logging.info(f"({user.name}) + {voice_duration} detik.")
 
@@ -128,16 +127,12 @@ class Voicecount(commands.Cog):
                 continue
 
             try:
-                # Update voice_time in voisa.leveling
                 await conn.execute(
                     "UPDATE voisa.leveling SET voice_time = voice_time + $1 WHERE member_id = $2",
                     voice_duration, int(member_id)
                 )
 
-                # Update daily stats
                 await self.update_daily_stats(int(member_id), user.name, voice_duration)
-
-                # Reset the start time to the current time
                 self.voice_start_times[member_id] = current_time
 
             except Exception as e:
@@ -182,7 +177,7 @@ class Voicecount(commands.Cog):
     @tasks.loop(seconds=120)
     async def flush_voice_count_buffer(self):
         if not self.voice_count_buffer:
-            return  # Tidak ada data yang perlu disinkron
+            return 
 
         logging.info(f"[Sync] {len(self.voice_count_buffer)} voice join ke-Database")
 
@@ -212,7 +207,7 @@ class Voicecount(commands.Cog):
     @tasks.loop(seconds=120)
     async def flush_message_buffer(self):
         if not self.message_buffer:
-            return  # Tidak ada yang perlu disinkron
+            return  #
 
         logging.info(f"[Sync]{len(self.message_buffer)} ke-Database")
 
@@ -224,7 +219,6 @@ class Voicecount(commands.Cog):
         try:
             async with conn.transaction():
                 for member_id, (username, count) in self.message_buffer.items():
-                    # Coba update dulu
                     query_update = """
                         UPDATE voisa.leveling
                         SET message_count = message_count + $1,
@@ -233,7 +227,6 @@ class Voicecount(commands.Cog):
                     """
                     result = await conn.execute(query_update, count, username, member_id)
 
-                    # Jika tidak ada baris diupdate (user belum ada), insert baru
                     if result == "UPDATE 0":
                         query_insert = """
                             INSERT INTO voisa.leveling (member_id, username, message_count, voice_time, poin)
